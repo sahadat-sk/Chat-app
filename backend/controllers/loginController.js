@@ -29,7 +29,7 @@ const handleLogin = async (req,res)=>{
     await User.findOneAndUpdate({email},{refreshToken:refreshToken});
 
     //cookie with refrest token
-    res.cookie('jwt',refreshToken,{httpOnly:true,secure:true,sameSite:'None',maxAge:24*60*60*1000});
+    res.cookie('jwt',refreshToken,{httpOnly:true,secure:false,sameSite:'None',maxAge:24*60*60*1000});
     
     //authorization with access token to user
     res.status(200).json({accessToken});
