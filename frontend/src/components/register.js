@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import "./auth.css";
+import axios from "axios";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+const REGISTER_URL = "http://localhost:5000/register";
 
 const Register = () => {
     const userRef = useRef();
-    const errRef = useRef();
 
     const [user, setUser] = useState("");
     const [validUser, setValidUser] = useState(false);
@@ -25,7 +27,6 @@ const Register = () => {
     const [matchPwd, setMatchPwd] = useState("");
     const [validMatchPwd, setValidMatchPwd] = useState(false);
     const [matchPwdFocused, setMatchPwdFocused] = useState(false);
-
     const [errMsg, setErrMsg] = useState("");
 
     useEffect(() => {
@@ -55,15 +56,42 @@ const Register = () => {
         setValidPwd(PWD_REGEX.test(pwd));
         setValidMatchPwd(pwd === matchPwd);
     }, [pwd, matchPwd]);
-
     useEffect(() => {
         setErrMsg("");
     }, [user, pwd, email, matchPwd]);
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post(
+                REGISTER_URL,
+                JSON.stringify({
+                    name: user,
+                    email,
+                    password: pwd,
+                    pic: "no pic",
+                }),
+                {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true,
+                }
+            );
+        } catch (err) {
+            if (!err?.response) {
+                setErrMsg("No Server Response");
+            } else if (err.response?.status === 409) {
+                setErrMsg("Username Taken");
+            } else {
+                setErrMsg("Registration Failed");
+            }
+        }
+    };
+
     return (
         <section>
+            <p>{errMsg}</p>
             <h1 className="heading">Register</h1>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <label htmlFor="username">Username:</label>
                 <input
                     type="text"
@@ -160,15 +188,26 @@ const Register = () => {
                 />
                 <p
                     className={
-                         matchPwdFocused && !validMatchPwd
+                        matchPwdFocused && !validMatchPwd
                             ? "instructions"
                             : "none"
                     }
                 >
                     must match with the password.
                 </p>
-                <button disabled={!validUser || !validEmail || !validMatchPwd || !validPwd ? true : false}>Sign Up</button>
+                <button
+                    disabled={
+                        !validUser || !validEmail || !validMatchPwd || !validPwd
+                            ? true
+                            : false
+                    }
+                >
+                    Sign Up
+                </button>
             </form>
+            <p>
+                Already a user ? <Link to="/">Log in</Link>
+            </p>
         </section>
     );
 };
