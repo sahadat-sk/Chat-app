@@ -3,8 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const handleNewUser = async (req, res) => {
-    const { name, email, password, pic } = req.body;
-    if (!name || !email || !password || !pic) {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
         return res.status(400).json({ message: "Please enter all fields" });
     }
     const duplicate = await User.findOne({ email });
@@ -15,7 +15,7 @@ const handleNewUser = async (req, res) => {
             name,
             email,
             password: hashedPassword,
-            pic,
+            
         });
         const refreshToken = jwt.sign(
             { email: user.email, userId: user._id },
@@ -35,7 +35,7 @@ const handleNewUser = async (req, res) => {
         //cookie with refrest token
         res.cookie("jwt", refreshToken, {
             httpOnly: true,
-            secure: false,
+            secure: false, // change this is production
             sameSite: "None",
             maxAge: 24 * 60 * 60 * 1000,
         });

@@ -5,7 +5,7 @@ const verifyJWT = (req, res, next) => {
     //console.log("auth:",authHeader);
     if(!authHeader?.startsWith('Bearer ')) {
         return res.status(401).json({
-            message: 'Invalid token'
+            message: 'No token'
         });
     }
     const token = authHeader.split(' ')[1];

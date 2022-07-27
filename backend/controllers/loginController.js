@@ -32,7 +32,7 @@ const handleLogin = async (req,res)=>{
     res.cookie('jwt',refreshToken,{httpOnly:true,secure:false,sameSite:'None',maxAge:24*60*60*1000});
     
     //authorization with access token to user
-    res.status(200).json({accessToken});
+    res.status(200).json({name:user.name,accessToken});
 }
 
 module.exports = {handleLogin};

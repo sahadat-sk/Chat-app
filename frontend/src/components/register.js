@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./auth.css";
 import axios from "axios";
+import useAuth from "../hooks/useAuth.js";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -10,6 +11,9 @@ const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 const REGISTER_URL = "http://localhost:5000/register";
 
 const Register = () => {
+    const { setAuth } = useAuth();
+    const navigate = useNavigate();
+
     const userRef = useRef();
 
     const [user, setUser] = useState("");
@@ -76,6 +80,15 @@ const Register = () => {
                     withCredentials: true,
                 }
             );
+            const accessToken = response?.data?.accessToken;
+            setAuth({ name: user, email, accessToken });
+
+            setEmail("");
+            setPwd("");
+            setMatchPwd("");
+            setUser("");
+            
+            navigate("/chats", { replace: true });
         } catch (err) {
             if (!err?.response) {
                 setErrMsg("No Server Response");

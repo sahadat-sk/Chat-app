@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./auth.css";
 import axios from "axios";
+import useAuth from '../hooks/useAuth.js'
 
 const Login = () => {
+
+    const {setAuth} = useAuth();
+
     const userRef = useRef();
 
     const [pwd, setPwd] = useState("");
-
     const [pwdFocused, setPwdFocused] = useState(false);
 
     const [email, setEmail] = useState("");
-
     const [emailFocused, setEmailFocused] = useState(false);
 
     const [errMsg, setErrMsg] = useState("");
+
+    const navigate = useNavigate();
     
     const LOGIN_URL = "http://localhost:5000/login";
 
@@ -39,9 +43,16 @@ const Login = () => {
                     withCredentials: true,
                 }
             );
-            console.log(response?.data);
-            console.log(response?.data?.accessToken);
+            const accessToken = response?.data?.accessToken;
+            setAuth({name:response?.data?.name,email,accessToken});
+            
+            setEmail("");
+            setPwd("");
+            navigate("/chats", { replace: true });
+            //console.log(accessToken)
+            
         }catch(err){
+            //console.log(err);
             if (!err?.response) {
                 setErrMsg("No Server Response");
             } else if (err.response?.status === 400) {
