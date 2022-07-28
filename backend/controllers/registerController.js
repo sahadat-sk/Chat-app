@@ -15,7 +15,6 @@ const handleNewUser = async (req, res) => {
             name,
             email,
             password: hashedPassword,
-            
         });
         const refreshToken = jwt.sign(
             { email: user.email, userId: user._id },

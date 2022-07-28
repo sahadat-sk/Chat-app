@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./auth.css";
 import axios from "axios";
 import useAuth from "../hooks/useAuth.js";
+import { Paper, TextField, Typography ,Box,Button, Stack} from "@mui/material";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -66,162 +67,161 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await axios.post(
-                REGISTER_URL,
-                JSON.stringify({
-                    name: user,
-                    email,
-                    password: pwd,
-                    pic: "no pic",
-                }),
-                {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true,
-                }
-            );
-            const accessToken = response?.data?.accessToken;
-            setAuth({ name: user, email, accessToken });
-
-            setEmail("");
-            setPwd("");
-            setMatchPwd("");
-            setUser("");
-            
-            navigate("/chats", { replace: true });
-        } catch (err) {
-            if (!err?.response) {
-                setErrMsg("No Server Response");
-            } else if (err.response?.status === 409) {
-                setErrMsg("Username Taken");
-            } else {
-                setErrMsg("Registration Failed");
-            }
+        console.log("submitted");
+        if (!validUser || !validEmail || !validMatchPwd || !validPwd){
+            setErrMsg("Invalid Input");
+            console.log("Invalid Input");
+            return;
         }
+            try {
+                const response = await axios.post(
+                    REGISTER_URL,
+                    JSON.stringify({
+                        name: user,
+                        email,
+                        password: pwd,
+                        pic: "no pic",
+                    }),
+                    {
+                        headers: { "Content-Type": "application/json" },
+                        withCredentials: true,
+                    }
+                );
+                const accessToken = response?.data?.accessToken;
+                setAuth({ name: user, email, accessToken });
+
+                setEmail("");
+                setPwd("");
+                setMatchPwd("");
+                setUser("");
+
+                navigate("/chats", { replace: true });
+            } catch (err) {
+                if (!err?.response) {
+                    setErrMsg("No Server Response");
+                } else if (err.response?.status === 409) {
+                    setErrMsg("Username Taken");
+                } else {
+                    setErrMsg("Registration Failed");
+                }
+            }
     };
 
     return (
-        <section>
-            <p>{errMsg}</p>
-            <h1 className="heading">Register</h1>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="username">Username:</label>
-                <input
-                    type="text"
-                    id="username"
-                    ref={userRef}
-                    value={user}
-                    onChange={(e) => setUser(e.target.value)}
-                    onFocus={() => setUserFocused(true)}
-                    onBlur={() => setUserFocused(false)}
-                    className={userFocused ? "focused" : ""}
-                    placeholder="Enter your name here"
-                    required
-                    autoComplete="off"
-                />
-                <p
-                    className={
-                        user && userFocused && !validUser
-                            ? "instructions"
-                            : "none"
-                    }
-                >
-                    4 to 24 characters. Must begin with a letter. Letters,
-                    numbers, underscores, hyphens allowed.
-                </p>
-                <br />
-                <label htmlFor="email">Email:</label>
-                <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    onFocus={() => setEmailFocused(true)}
-                    onBlur={() => setEmailFocused(false)}
-                    className={emailFocused ? "focused" : ""}
-                    placeholder="Enter your email here"
-                    required
-                    autoComplete="off"
-                />
-                <p
-                    className={
-                        email && emailFocused && !validEmail
-                            ? "instructions"
-                            : "none"
-                    }
-                >
-                    Enter a valid Email.
-                </p>
-                <br />
-                <label htmlFor="password">password:</label>
-                <input
-                    type="password"
-                    id="password"
-                    value={pwd}
-                    onChange={(e) => setPwd(e.target.value)}
-                    onFocus={() => setPwdFocused(true)}
-                    onBlur={() => setPwdFocused(false)}
-                    className={pwdFocused ? "focused" : ""}
-                    placeholder="Enter a secure password"
-                    required
-                    autoComplete="off"
-                />
-                <p
-                    className={
-                        pwdFocused && !validPwd ? "instructions" : "none"
-                    }
-                >
-                    8 to 24 characters.
-                    <br />
-                    Must include uppercase and lowercase letters, a number and a
-                    special character.
-                    <br />
-                    Allowed special characters:{" "}
-                    <span aria-label="exclamation mark">!</span>{" "}
-                    <span aria-label="at symbol">@</span>{" "}
-                    <span aria-label="hashtag">#</span>{" "}
-                    <span aria-label="dollar sign">$</span>{" "}
-                    <span aria-label="percent">%</span>
-                </p>
+        <>
+            <div className="main">
+                <div className="image"></div>
+                <div className="form_container">
+                    <Box
+                        p={10}
+                        height="100%"
+                        width="60%"
+                        backgroundColor="white"
+                    >
+                        <Typography>{errMsg}</Typography>
+                        <Typography variant="h4" align="left" gutterBottom>
+                            Register
+                        </Typography>
+                        <form onSubmit={handleSubmit}>
+                            <Stack spacing={6}>
+                                <TextField
+                                    type="text"
+                                    id="username"
+                                    ref={userRef}
+                                    value={user}
+                                    onChange={(e) => setUser(e.target.value)}
+                                    onFocus={() => setUserFocused(true)}
+                                    onBlur={() => setUserFocused(false)}
+                                    variant="standard"
+                                    required
+                                    autoComplete="off"
+                                    label="Username"
+                                    helperText={
+                                        !validUser && user.length > 0
+                                            ? "Username must be 4 to 24 characters long"
+                                            : ""
+                                    }
+                                    error={!validUser && user.length > 0}
+                                />
 
-                <br />
+                                <TextField
+                                    type="email"
+                                    id="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    onFocus={() => setEmailFocused(true)}
+                                    onBlur={() => setEmailFocused(false)}
+                                    required
+                                    autoComplete="off"
+                                    label="Email"
+                                    variant="standard"
+                                    helperText={
+                                        !validEmail && email.length > 0
+                                            ? "Email must be valid"
+                                            : ""
+                                    }
+                                    error={!validEmail && email.length > 0}
+                                />
 
-                <label htmlFor="confirm_pwd">confirm Password:</label>
-                <input
-                    type="password"
-                    id="confirm_pwd"
-                    value={matchPwd}
-                    onChange={(e) => setMatchPwd(e.target.value)}
-                    onFocus={() => setMatchPwdFocused(true)}
-                    onBlur={() => setMatchPwdFocused(false)}
-                    className={matchPwdFocused ? "focused" : ""}
-                    placeholder="confirm your password"
-                    required
-                    autoComplete="off"
-                />
-                <p
-                    className={
-                        matchPwdFocused && !validMatchPwd
-                            ? "instructions"
-                            : "none"
-                    }
-                >
-                    must match with the password.
-                </p>
-                <button
-                    disabled={
-                        !validUser || !validEmail || !validMatchPwd || !validPwd
-                            ? true
-                            : false
-                    }
-                >
-                    Sign Up
-                </button>
-            </form>
-            <p>
-                Already a user ? <Link to="/">Log in</Link>
-            </p>
-        </section>
+                                <TextField
+                                    type="password"
+                                    id="password"
+                                    value={pwd}
+                                    onChange={(e) => setPwd(e.target.value)}
+                                    onFocus={() => setPwdFocused(true)}
+                                    onBlur={() => setPwdFocused(false)}
+                                    label="Password"
+                                    required
+                                    autoComplete="off"
+                                    variant="standard"
+                                    helperText={
+                                        !validPwd && pwd.length > 0
+                                            ? "Password must be 8 to 24 characters long and contain at least one lowercase letter, one uppercase letter, one number and one special character"
+                                            : ""
+                                    }
+                                    error={!validPwd && pwd.length > 0}
+                                />
+
+                                <TextField
+                                    type="password"
+                                    id="confirm_pwd"
+                                    value={matchPwd}
+                                    onChange={(e) =>
+                                        setMatchPwd(e.target.value)
+                                    }
+                                    onFocus={() => setMatchPwdFocused(true)}
+                                    onBlur={() => setMatchPwdFocused(false)}
+                                    label="Confirm Password"
+                                    required
+                                    autoComplete="off"
+                                    variant="standard"
+                                    helperText={
+                                        !validMatchPwd && matchPwd.length > 0
+                                            ? "Passwords must match"
+                                            : ""
+                                    }
+                                    error={
+                                        !validMatchPwd && matchPwd.length > 0
+                                    }
+                                />
+
+                                <Button
+                                    size="large"
+                                    width="20rem"
+                                    variant="contained"
+                                    onClick={handleSubmit}
+                                >
+                                    Sign Up
+                                </Button>
+                            </Stack>
+                        </form>
+                        <Typography mt={2}>
+                            Already a user ? <Link to="/">Log in</Link>
+                        </Typography>
+                    </Box>
+                </div>
+            </div>
+        </>
     );
 };
 

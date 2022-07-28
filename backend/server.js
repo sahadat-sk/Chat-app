@@ -38,7 +38,6 @@ app.use("/logout", require("./routes/logout"));
 app.use(verifyJWT);
 app.use("/chats", require("./routes/chats"));
 
-
 mongoose.connection.once("open", () => {
     console.log("MongoDB Connected...");
     app.listen(PORT, () => {
