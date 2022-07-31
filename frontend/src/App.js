@@ -1,10 +1,10 @@
 import "./App.css";
-import Register from "./components/register.js";
-import Login from "./components/login.js";
+import Register from "./pages/register.js";
+import Login from "./pages/login.js";
 import { Routes, Route } from "react-router-dom";
-import Chats from "./components/chats.js";
-import RequireAuth from "./components/requireAuth.js";
-import PersistLogin from "./components/PersistLogin.js";
+import Chats from "./pages/chats.js";
+import RequireAuth from "./pages/requireAuth.js";
+import PersistLogin from "./pages/PersistLogin.js";
 
 function App() {
     return (

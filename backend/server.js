@@ -37,6 +37,7 @@ app.use("/logout", require("./routes/logout"));
 //protected routes
 app.use(verifyJWT);
 app.use("/chats", require("./routes/chats"));
+app.use("/users", require("./routes/users"));
 
 mongoose.connection.once("open", () => {
     console.log("MongoDB Connected...");
