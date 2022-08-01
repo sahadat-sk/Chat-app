@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./auth.css";
 import axios from "axios";
 import useAuth from '../hooks/useAuth.js'
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 
 const Login = () => {
 
@@ -24,7 +25,7 @@ const Login = () => {
     const LOGIN_URL = "http://localhost:5000/login";
 
     useEffect(() => {
-        userRef.current.focus();
+       // userRef.current.focus();
     }, []);
 
     useEffect(() => {
@@ -66,47 +67,67 @@ const Login = () => {
         }
     }
     return (
-        <section>
-            <p>{errMsg}</p>
-            <h1 className="heading">Log In</h1>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="email" ref={userRef}>
-                    Email:
-                </label>
-                <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    onFocus={() => setEmailFocused(true)}
-                    onBlur={() => setEmailFocused(false)}
-                    className={emailFocused ? "focused" : ""}
-                    placeholder="Enter your email here"
-                    required
-                    autoComplete="off"
-                />
+        <>
+            <div className="main">
+                <div className="image"></div>
+                <div className="form_container">
+                    <Box
+                        p={10}
+                        height="100%"
+                        width="60%"
+                        backgroundColor="white"
+                    >
+                        <Typography>{errMsg}</Typography>
+                        <Typography variant="h4" align="left" gutterBottom>
+                            Log In
+                        </Typography>
+                        <form onSubmit={handleSubmit}>
+                            <Stack spacing={2}>
+                               
+                                <TextField
+                                    type="email"
+                                    id="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    onFocus={() => setEmailFocused(true)}
+                                    onBlur={() => setEmailFocused(false)}
+                                    className={emailFocused ? "focused" : ""}
+                                    label="Email"
+                                    autoComplete="off"
+                                />
 
-                <br />
-                <label htmlFor="password">password:</label>
-                <input
-                    type="password"
-                    id="password"
-                    value={pwd}
-                    onChange={(e) => setPwd(e.target.value)}
-                    onFocus={() => setPwdFocused(true)}
-                    onBlur={() => setPwdFocused(false)}
-                    className={pwdFocused ? "focused" : ""}
-                    placeholder="Enter a secure password"
-                    required
-                    autoComplete="off"
-                />
+                                <br />
+                                
+                                <TextField
+                                    type="password"
+                                    id="password"
+                                    value={pwd}
+                                    onChange={(e) => setPwd(e.target.value)}
+                                    onFocus={() => setPwdFocused(true)}
+                                    onBlur={() => setPwdFocused(false)}
+                                    className={pwdFocused ? "focused" : ""}
+                                    label="Password"
+                                    
+                                    autoComplete="off"
+                                />
 
-                <br />
+                                <br />
 
-                <button>Log In</button>
-            </form>
-            <p>New User ? <Link to="/register">Register</Link></p>
-        </section>
+                                 <Button
+                                    size="large"
+                                    width="20rem"
+                                    variant="contained"
+                                    onClick={handleSubmit}
+                                >Log In</Button>
+                            </Stack>
+                        </form>
+                        <Typography mt={2}>
+                            New User ? <Link to="/register">Register</Link>
+                        </Typography>
+                    </Box>
+                </div>
+            </div>
+        </>
     );
 };
 

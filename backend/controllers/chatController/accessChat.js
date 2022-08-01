@@ -5,13 +5,13 @@ const accessChat = async (req, res) => {
     const { userId } = req.body;
     // console.log(req.user);
     if (!userId) {
-        return res.status(400).json({ message: ` User ${userId} Id found` });
+        return res.status(400).json({ message: ` User ${userId} Id not found` });
     }
 
     let isChat = await Chat.find({
         isGroupChat: false,
         $and: [
-            { users: { $elemMatch: { $eq: req.user._id } } },
+            { users: { $elemMatch: { $eq: req.user.id } } },
             { users: { $elemMatch: { $eq: userId } } },
         ],
     })

@@ -57,20 +57,23 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-export default function PrimarySearchAppBar({showModal,setShowModal,setShowSearch,setAnchorEl2}) {
+export default function PrimarySearchAppBar({
+    showModal,
+    setShowModal,
+    setShowSearch,
+    setSearch
+}) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-
     //logout
     const logout = UseLogout();
     const handleLogout = async () => {
         await logout();
     };
-
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -92,10 +95,10 @@ export default function PrimarySearchAppBar({showModal,setShowModal,setShowSearc
         handleLogout();
     };
 
-     const handleMenuClose = () => {
-         setAnchorEl(null);
-         handleMobileMenuClose();
-     };
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+        handleMobileMenuClose();
+    };
 
     const handleMobileMenuOpen = (event) => {
         setMobileMoreAnchorEl(event.currentTarget);
@@ -140,7 +143,6 @@ export default function PrimarySearchAppBar({showModal,setShowModal,setShowSearc
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            
             <MenuItem>
                 <IconButton
                     size="large"
@@ -168,17 +170,19 @@ export default function PrimarySearchAppBar({showModal,setShowModal,setShowSearc
         </Menu>
     );
 
-            //handle search
+    //handle search
 
-            const handleSearch = (event) => {
-                console.log("searching");
-                setShowSearch(true);
-            }
-            const handleSearchBlur = () =>{
-                console.log("not searching");
-                setShowSearch(false);
-            }
-
+    const handleSearch = (event) => {
+        //console.log("searching");
+        setSearch(event.target.value);
+        setShowSearch(true);
+    };
+    const handleSearchBlur = () => {
+        //console.log("not searching");
+        setTimeout(() => {
+            setShowSearch(false);
+        }, 400);
+    };
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -201,11 +205,10 @@ export default function PrimarySearchAppBar({showModal,setShowModal,setShowSearc
                     >
                         GIGA Chat
                     </Typography>
-                    <Search onChange={handleSearch}
+                    <Search
+                        onChange={handleSearch}
                         onBlur={handleSearchBlur}
-                        onClick={(e)=>{
-                                setAnchorEl2(e.currentTarget)
-                        }}
+                        onFocus={handleSearch}
                     >
                         <SearchIconWrapper>
                             <SearchIcon />
@@ -217,7 +220,6 @@ export default function PrimarySearchAppBar({showModal,setShowModal,setShowSearc
                     </Search>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                        
                         <IconButton
                             size="large"
                             aria-label="show 17 new notifications"

@@ -123,7 +123,7 @@ const Register = () => {
                             Register
                         </Typography>
                         <form onSubmit={handleSubmit}>
-                            <Stack spacing={6}>
+                            <Stack spacing={3}>
                                 <TextField
                                     type="text"
                                     id="username"
@@ -132,7 +132,7 @@ const Register = () => {
                                     onChange={(e) => setUser(e.target.value)}
                                     onFocus={() => setUserFocused(true)}
                                     onBlur={() => setUserFocused(false)}
-                                    variant="standard"
+                                    
                                     required
                                     autoComplete="off"
                                     label="Username"
@@ -154,7 +154,7 @@ const Register = () => {
                                     required
                                     autoComplete="off"
                                     label="Email"
-                                    variant="standard"
+                                    
                                     helperText={
                                         !validEmail && email.length > 0
                                             ? "Email must be valid"
@@ -173,7 +173,7 @@ const Register = () => {
                                     label="Password"
                                     required
                                     autoComplete="off"
-                                    variant="standard"
+                                    
                                     helperText={
                                         !validPwd && pwd.length > 0
                                             ? "Password must be 8 to 24 characters long and contain at least one lowercase letter, one uppercase letter, one number and one special character"
@@ -194,7 +194,7 @@ const Register = () => {
                                     label="Confirm Password"
                                     required
                                     autoComplete="off"
-                                    variant="standard"
+                                    
                                     helperText={
                                         !validMatchPwd && matchPwd.length > 0
                                             ? "Passwords must match"
