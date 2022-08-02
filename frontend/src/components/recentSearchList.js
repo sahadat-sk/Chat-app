@@ -10,12 +10,11 @@ import AxoisPrivate from "../hooks/useAxiosPrivate.js";
 import { useState, useEffect } from "react";
 import { Box, Menu } from "@mui/material";
 
-export default function AlignItemsList({ anchorEl, setAnchorEl, search }) {
+export default function AlignItemsList() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
 
     // const [anchorEl, setAnchorEl] = React.useState(null);
-   
 
     const axios = AxoisPrivate();
 
@@ -24,7 +23,7 @@ export default function AlignItemsList({ anchorEl, setAnchorEl, search }) {
         const setData = async () => {
             try {
                 setLoading(true);
-                const { data } = await axios.get("/users?search=" + search);
+                const { data } = await axios.get("/users/recent");
                 setUsers(data);
                 //console.log(data);
                 setLoading(false);
@@ -33,7 +32,7 @@ export default function AlignItemsList({ anchorEl, setAnchorEl, search }) {
             }
         };
         setData();
-    }, [search]);
+    }, []);
 
     return (
         <>
@@ -49,7 +48,11 @@ export default function AlignItemsList({ anchorEl, setAnchorEl, search }) {
                     <List>
                         {users.length > 0 &&
                             users.map((user) => (
-                                <ListItem key={user._id} name={user.name} userId={user._id}/>
+                                <ListItem
+                                    key={user._id}
+                                    name={user.name}
+                                    userId={user._id}
+                                />
                             ))}
                         {users.length === 0 && (
                             <ListItemText primary="No results" />

@@ -22,7 +22,7 @@ const Chats = () => {
                 setSearch={setSearch}
             />
             <Dialog showModal={showModal} setShowModal={setShowModal} />
-            {showSearch && <SearchList position="absolute" search={search} />}
+            {showSearch && <SearchList  search={search} />}
             <Stack
                 direction={["column", "column", "row"]}
                 sx={{

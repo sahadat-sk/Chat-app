@@ -7,7 +7,7 @@ const accessChat = async (req, res) => {
     if (!userId) {
         return res.status(400).json({ message: ` User ${userId} Id not found` });
     }
-
+    //console.log("User is",req.user.name);
     let isChat = await Chat.find({
         isGroupChat: false,
         $and: [
