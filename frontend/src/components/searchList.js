@@ -41,7 +41,8 @@ export default function AlignItemsList({ anchorEl, setAnchorEl, search }) {
                 <Box
                     sx={{
                         width: "100%",
-                        bgcolor: "background.paper",
+                        
+                        backgroundColor: "background.paper",
                         position: "absolute",
                         zIndex: 1,
                     }}
@@ -49,7 +50,11 @@ export default function AlignItemsList({ anchorEl, setAnchorEl, search }) {
                     <List>
                         {users.length > 0 &&
                             users.map((user) => (
-                                <ListItem key={user._id} name={user.name} userId={user._id}/>
+                                <ListItem
+                                    key={user._id}
+                                    name={user.name}
+                                    userId={user._id}
+                                />
                             ))}
                         {users.length === 0 && (
                             <ListItemText primary="No results" />

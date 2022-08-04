@@ -12,6 +12,8 @@ const Chats = () => {
     const [showModal, setShowModal] = useState(false);
     const [showSearch, setShowSearch] = useState(false);
     const [search, setSearch] = useState("");
+    const [selectedChat, setSelectedChat] = useState("");
+
 
     return (
         <div className="ChatsContainer">
@@ -31,8 +33,8 @@ const Chats = () => {
                 p={1}
                 gap={1}
             >
-                <Recent />
-                <Messages />
+                <Recent setSelectedChat={setSelectedChat}/>
+                <Messages selectedChat={selectedChat}/>
             </Stack>
         </div>
     );

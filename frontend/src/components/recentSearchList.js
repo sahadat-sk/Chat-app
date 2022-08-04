@@ -1,16 +1,14 @@
 import * as React from "react";
 import List from "@mui/material/List";
-import ListItem from "./listItem.js";
+import ListItem from "./recentItem.js";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import Typography from "@mui/material/Typography";
+
 import AxoisPrivate from "../hooks/useAxiosPrivate.js";
 import { useState, useEffect } from "react";
 import { Box, Menu } from "@mui/material";
 
-export default function AlignItemsList() {
+export default function AlignItemsList({setSelectedChat}) {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -40,8 +38,8 @@ export default function AlignItemsList() {
                 <Box
                     sx={{
                         width: "100%",
-                        bgcolor: "background.paper",
-                        position: "absolute",
+                        bgcolor: "#eceff1",
+
                         zIndex: 1,
                     }}
                 >
@@ -52,6 +50,7 @@ export default function AlignItemsList() {
                                     key={user._id}
                                     name={user.name}
                                     userId={user._id}
+                                    setSelectedChat={setSelectedChat}
                                 />
                             ))}
                         {users.length === 0 && (

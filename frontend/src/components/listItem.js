@@ -1,5 +1,6 @@
 import {
     Avatar,
+    Divider,
     List,
     ListItem,
     ListItemAvatar,
@@ -25,25 +26,28 @@ export default ({ name,userId }) => {
     }
 
     return (
-        <ListItem onClick={handleClick}>
-            <ListItemButton>
-                <ListItemAvatar>
-                    <Avatar alt={name} src="/static/images/avatar/1.jpg" />
-                </ListItemAvatar>
-                <ListItemText
-                    primary={name}
-                    secondary={
-                        <Typography
-                            sx={{ display: "inline" }}
-                            component="span"
-                            variant="body2"
-                            color="text.primary"
-                        >
-                            Ali Connors
-                        </Typography>
-                    }
-                />
-            </ListItemButton>
-        </ListItem>
+        <>
+            <ListItem onClick={handleClick}>
+                <ListItemButton>
+                    <ListItemAvatar>
+                        <Avatar alt={name} src="/static/images/avatar/1.jpg" />
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={name}
+                        secondary={
+                            <Typography
+                                sx={{ display: "inline" }}
+                                component="span"
+                                variant="body2"
+                                color="text.primary"
+                            >
+                                Ali Connors
+                            </Typography>
+                        }
+                    />
+                </ListItemButton>
+            </ListItem>
+            <Divider />
+        </>
     );
 };

@@ -38,6 +38,7 @@ app.use("/logout", require("./routes/logout"));
 app.use(verifyJWT);
 app.use("/chats", require("./routes/chats"));
 app.use("/users", require("./routes/users"));
+app.use("/messages",require("./routes/messages"));
 
 mongoose.connection.once("open", () => {
     console.log("MongoDB Connected...");
