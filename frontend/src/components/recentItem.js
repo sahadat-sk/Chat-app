@@ -11,11 +11,11 @@ import {
 import React from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
-export default ({ name, userId,setSelectedChat }) => {
+export default ({ name, userId,setSelectedChat,setSelectedChatName }) => {
     
-    const handleClick = ()=>{
-        
-        setSelectedChat(name);
+    const handleClick = ()=>{    
+        setSelectedChat(userId);
+        setSelectedChatName(name);
     }
    
 

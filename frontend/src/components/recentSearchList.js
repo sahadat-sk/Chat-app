@@ -8,7 +8,7 @@ import AxoisPrivate from "../hooks/useAxiosPrivate.js";
 import { useState, useEffect } from "react";
 import { Box, Menu } from "@mui/material";
 
-export default function AlignItemsList({setSelectedChat}) {
+export default function AlignItemsList({setSelectedChat,setSelectedChatName}) {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -51,6 +51,7 @@ export default function AlignItemsList({setSelectedChat}) {
                                     name={user.name}
                                     userId={user._id}
                                     setSelectedChat={setSelectedChat}
+                                    setSelectedChatName={setSelectedChatName}
                                 />
                             ))}
                         {users.length === 0 && (
