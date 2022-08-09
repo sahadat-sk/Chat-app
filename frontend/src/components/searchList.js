@@ -1,16 +1,14 @@
 import * as React from "react";
 import List from "@mui/material/List";
 import ListItem from "./listItem.js";
-import Divider from "@mui/material/Divider";
+
 import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import Typography from "@mui/material/Typography";
+
 import AxoisPrivate from "../hooks/useAxiosPrivate.js";
 import { useState, useEffect } from "react";
-import { Box, Menu } from "@mui/material";
+import { Box } from "@mui/material";
 
-export default function AlignItemsList({ anchorEl, setAnchorEl, search }) {
+export default function AlignItemsList({  search }) {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
 

@@ -5,6 +5,7 @@ import Dialog from "../components/dialog.js";
 import SearchList from "../components/searchList.js";
 import Recent from "../components/recent.js";
 import Messages from "../components/messages.js";
+import GroupDialog from "../components/group/groupDialog.js";
 import { Stack } from "@mui/material";
 
 const Chats = () => {
@@ -14,7 +15,7 @@ const Chats = () => {
     const [search, setSearch] = useState("");
     const [selectedChat, setSelectedChat] = useState("");
     const [selectedChatName, setSelectedChatName] = useState("");
-
+    const [newGroup, setNewGroup] = useState(false);
 
     return (
         <div className="ChatsContainer">
@@ -25,7 +26,7 @@ const Chats = () => {
                 setSearch={setSearch}
             />
             <Dialog showModal={showModal} setShowModal={setShowModal} />
-            {showSearch && <SearchList  search={search} />}
+            {showSearch && <SearchList search={search} />}
             <Stack
                 direction={["column", "column", "row"]}
                 sx={{
@@ -34,8 +35,16 @@ const Chats = () => {
                 p={1}
                 gap={1}
             >
-                <Recent setSelectedChat={setSelectedChat} setSelectedChatName={setSelectedChatName}/>
-                <Messages selectedChat={selectedChat} selectedChatName={selectedChatName}/>
+                <Recent
+                    setSelectedChat={setSelectedChat}
+                    setSelectedChatName={setSelectedChatName}
+                    setNewGroup={setNewGroup}
+                />
+                <Messages
+                    selectedChat={selectedChat}
+                    selectedChatName={selectedChatName}
+                />
+                <GroupDialog showModal={newGroup} setShowModal={setNewGroup} />
             </Stack>
         </div>
     );

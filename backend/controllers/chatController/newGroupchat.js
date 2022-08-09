@@ -1,7 +1,7 @@
 const Chat = require("../../models/chatModel");
 
 const newGroupChat = async (req, res) => {
-    const { users, chatName } = req.body;
+    let { users, chatName } = req.body;
     if (!users || !chatName) {
         return res.status(400).json({ message: "Invalid Request" });
     }
@@ -11,7 +11,8 @@ const newGroupChat = async (req, res) => {
             .status(400)
             .json({ message: "More than 2 members are required" });
     }
-    users.push(req.user);
+    users.push(req.user.id);
+    console.log(users);
     try {
         const groupChat = await Chat.create({
             chatName,

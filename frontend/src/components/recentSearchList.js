@@ -23,7 +23,7 @@ export default function AlignItemsList({setSelectedChat,setSelectedChatName}) {
                 setLoading(true);
                 const { data } = await axios.get("/users/recent");
                 setUsers(data);
-                //console.log(data);
+                console.log(data);
                 setLoading(false);
             } catch (err) {
                 console.log(err);

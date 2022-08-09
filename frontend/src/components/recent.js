@@ -2,7 +2,10 @@ import { Box, Button, Stack, Typography } from '@mui/material'
 import React from 'react'
 import RecentSearch from "./recentSearchList";
 
-const Recent = ({ setSelectedChat,setSelectedChatName }) => {
+const Recent = ({ setSelectedChat,setSelectedChatName,setNewGroup }) => {
+    const handleOpen = () => {
+        setNewGroup(true);
+    }
     return (
         <Box
             sx={{
@@ -22,7 +25,7 @@ const Recent = ({ setSelectedChat,setSelectedChatName }) => {
                 mb={0.3}
             >
                 <Typography variant="h5">Recent Chats</Typography>
-                <Button variant="outlined">Create Group Chat</Button>
+                <Button variant="outlined" onClick={handleOpen}>Create Group Chat</Button>
             </Stack>
             <RecentSearch setSelectedChat={setSelectedChat} setSelectedChatName={setSelectedChatName}/>
         </Box>
