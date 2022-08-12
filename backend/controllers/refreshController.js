@@ -24,6 +24,7 @@ const handleRefreshToken = async (req, res) => {
             name: user.name,
             email: user.email,
             accessToken,
+            _id : user._id,
         });
     } catch (error) {
         res.sendStatus(401);

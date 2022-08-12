@@ -11,20 +11,28 @@ import {
 import React from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
-export default ({ name, userId,setSelectedChat,setSelectedChatName }) => {
-    
-    const handleClick = ()=>{    
+export default ({
+    name,
+    userId,
+    setSelectedChat,
+    setSelectedChatName,
+    latestMessage,
+    latestMessageSender
+}) => {
+    const handleClick = () => {
         setSelectedChat(userId);
         setSelectedChatName(name);
-    }
-   
+    };
 
     return (
-        <ListItem onClick={handleClick}sx={{
-            backgroundColor: "background.paper",
-            marginBottom: ".1rem",
-            width: "100%",
-        }}>
+        <ListItem
+            onClick={handleClick}
+            sx={{
+                backgroundColor: "background.paper",
+                marginBottom: ".1rem",
+                width: "100%",
+            }}
+        >
             <ListItemButton>
                 <ListItemAvatar>
                     <Avatar alt={name} src="/static/images/avatar/1.jpg" />
@@ -32,14 +40,20 @@ export default ({ name, userId,setSelectedChat,setSelectedChatName }) => {
                 <ListItemText
                     primary={name}
                     secondary={
-                        <Typography
-                            sx={{ display: "inline" }}
-                            component="span"
-                            variant="body2"
-                            color="text.primary"
-                        >
-                            Ali Connors
-                        </Typography>
+                        <>
+                            <Typography variant="body2"
+                            component="span">
+                                {latestMessageSender}:{" "}
+                            </Typography>
+                            <Typography
+                                sx={{ display: "inline" }}
+                                component="span"
+                                variant="body2"
+                                color="text.primary"
+                            >
+                                {latestMessage}
+                            </Typography>
+                        </>
                     }
                 />
             </ListItemButton>

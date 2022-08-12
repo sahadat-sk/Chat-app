@@ -40,7 +40,7 @@ const handleLogin = async (req, res) => {
     });
 
     //authorization with access token to user
-    res.status(200).json({ name: user.name, accessToken });
+    res.status(200).json({ name: user.name, accessToken, _id : user._id });
 };
 
 module.exports = { handleLogin };

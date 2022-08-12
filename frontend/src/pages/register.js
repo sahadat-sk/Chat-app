@@ -88,7 +88,7 @@ const Register = () => {
                     }
                 );
                 const accessToken = response?.data?.accessToken;
-                setAuth({ name: user, email, accessToken });
+                setAuth({ name: user,id:response?.data?._id, email, accessToken });
 
                 setEmail("");
                 setPwd("");

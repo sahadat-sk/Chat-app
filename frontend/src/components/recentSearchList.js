@@ -7,12 +7,16 @@ import ListItemText from "@mui/material/ListItemText";
 import AxoisPrivate from "../hooks/useAxiosPrivate.js";
 import { useState, useEffect } from "react";
 import { Box, Menu } from "@mui/material";
+import useAuth from "../hooks/useAuth.js";
 
-export default function AlignItemsList({setSelectedChat,setSelectedChatName}) {
-    const [users, setUsers] = useState([]);
+export default function AlignItemsList({
+    setSelectedChat,
+    setSelectedChatName,
+}) {
+    const [chats, setChats] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // const [anchorEl, setAnchorEl] = React.useState(null);
+    const { auth } = useAuth();
 
     const axios = AxoisPrivate();
 
@@ -21,9 +25,10 @@ export default function AlignItemsList({setSelectedChat,setSelectedChatName}) {
         const setData = async () => {
             try {
                 setLoading(true);
-                const { data } = await axios.get("/users/recent");
-                setUsers(data);
-                console.log(data);
+                const { data } = await axios.get("/chats/");
+                setChats(data);
+                //console.log(auth.id);
+                //console.log(data[0].latestMessage);
                 setLoading(false);
             } catch (err) {
                 console.log(err);
@@ -31,6 +36,13 @@ export default function AlignItemsList({setSelectedChat,setSelectedChatName}) {
         };
         setData();
     }, []);
+
+    const getChatName = (users) => {
+        //console.log(users);
+        const name = users?.filter((user) => user._id !== auth.id)[0]?.name;
+        //console.log(name)
+        return name;
+    };
 
     return (
         <>
@@ -44,17 +56,28 @@ export default function AlignItemsList({setSelectedChat,setSelectedChatName}) {
                     }}
                 >
                     <List>
-                        {users.length > 0 &&
-                            users.map((user) => (
+                        {chats.length > 0 &&
+                            chats.map((chat) => (
                                 <ListItem
-                                    key={user._id}
-                                    name={user.name}
-                                    userId={user._id}
+                                    key={chat._id}
+                                    name={
+                                        chat.chatName !== "sender"
+                                            ? chat.chatName
+                                            : getChatName(chat.users)
+                                    }
+                                    userId={chat._id}
                                     setSelectedChat={setSelectedChat}
                                     setSelectedChatName={setSelectedChatName}
+                                    latestMessage={chat.latestMessage.content}
+                                    latestMessageSender={
+                                        auth.id ===
+                                        chat.latestMessage.sender._id
+                                            ? "You"
+                                            : chat.latestMessage.sender.name
+                                    }
                                 />
                             ))}
-                        {users.length === 0 && (
+                        {chats.length === 0 && (
                             <ListItemText primary="No results" />
                         )}
                     </List>

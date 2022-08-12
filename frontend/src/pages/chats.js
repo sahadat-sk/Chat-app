@@ -13,7 +13,7 @@ const Chats = () => {
     const [showModal, setShowModal] = useState(false);
     const [showSearch, setShowSearch] = useState(false);
     const [search, setSearch] = useState("");
-    const [selectedChat, setSelectedChat] = useState("");
+    const [selectedChat, setSelectedChat] = useState("");//stores the id of the chat?
     const [selectedChatName, setSelectedChatName] = useState("");
     const [newGroup, setNewGroup] = useState(false);
 

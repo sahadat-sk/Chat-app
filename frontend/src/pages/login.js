@@ -45,7 +45,7 @@ const Login = () => {
                 }
             );
             const accessToken = response?.data?.accessToken;
-            setAuth({name:response?.data?.name,email,accessToken});
+            setAuth({name:response?.data?.name,id:response?.data?._id,email,accessToken});
             
             setEmail("");
             setPwd("");

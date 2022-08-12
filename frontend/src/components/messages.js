@@ -1,11 +1,11 @@
 import {
     Box,
-    Button,
+  
     FormControl,
     IconButton,
-    Input,
+   
     InputAdornment,
-    InputLabel,
+    
     Stack,
     TextField,
     Typography,
@@ -13,58 +13,49 @@ import {
 import React, { useEffect, useState } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate.js";
 import SendIcon from "@mui/icons-material/Send";
-import { height } from "@mui/system";
+
+import useAuth from "../hooks/useAuth.js";
 
 const Messages = ({ selectedChat ,selectedChatName}) => {
     const axios = useAxiosPrivate();
 
     const [messages, setMessages] = useState([]);
-    const [chatId, setChatId] = useState(null);
+    
     const [message, setMessage] = useState("");
+
+    const { auth } = useAuth();
 
     const handleSubmit = async () => {
         const sendMessage = async () => {
             try {
-                const { data } = await axios.post("/messages/" + chatId, {
+                const { data } = await axios.post("/messages/" + selectedChat, {
                     message,
                 });
             } catch (err) {
                 console.log(err);
             }
         };
-        if (chatId && message !== "") {
+        if (selectedChat && message !== "") {
             sendMessage();
             setMessage("");
         }
     };
 
-    useEffect(() => {
-        const changeId = async () => {
-            const { data } = await axios.post("/chats/", {
-                userId: selectedChat,
-            });
-            setChatId(data._id);
-        };
-        changeId();
-    }, [selectedChat]);
+    
 
     useEffect(() => {
         const setData = async () => {
             try {
-                const { data } = await axios.post("/chats/", {
-                    userId: selectedChat,
-                });
-                const chatId = data._id;
-
-                const messagesData = await axios.get("/messages/" + chatId);
+                
+                const messagesData = await axios.get("/messages/" + selectedChat);
                 setMessages(messagesData.data);
-                console.log("messages", messagesData.data);
+                //console.log("messages", messagesData.data);
             } catch (err) {
                 console.error(err);
             }
         };
         setData();
-    }, [chatId]);
+    }, [selectedChat]);
 
     return (
         <Box
@@ -98,11 +89,11 @@ const Messages = ({ selectedChat ,selectedChatName}) => {
                                 padding: ".5rem",
                                 margin: ".1rem",
                                 textAlign:
-                                    message.sender._id === selectedChat
-                                        ? "left"
-                                        : "right",
+                                    message.sender._id === auth.id
+                                        ? "right"
+                                        : "left",
                                 color:
-                                    message.sender._id === selectedChat
+                                    message.sender._id === auth.id
                                         ? "white"
                                         : "black",
                             }}
@@ -111,7 +102,7 @@ const Messages = ({ selectedChat ,selectedChatName}) => {
                                 component="span"
                                 sx={{
                                     backgroundColor:
-                                        message.sender._id === selectedChat
+                                        message.sender._id === auth.id
                                             ? "primary.main"
                                             : "#cfd8dc",
                                     padding: ".7rem",
@@ -120,12 +111,15 @@ const Messages = ({ selectedChat ,selectedChatName}) => {
                                     ml: "0rem",
                                 }}
                             >
+                                {/* <Typography variant="body2">
+                                    {message.sender.name}
+                                </Typography>  STYLING PROBLEM !!!*/}
                                 {message.content}
                             </Typography>
                         </Typography>
                     ))}
             </Stack>
-            <FormControl fullWidth sx={{ mt: 1  }} variant="standard">
+            <FormControl fullWidth sx={{ mt: 1 }} variant="standard">
                 <TextField
                     hiddenLabel
                     id="filled-hidden-label-small"
@@ -133,20 +127,19 @@ const Messages = ({ selectedChat ,selectedChatName}) => {
                     size="small"
                     onChange={(e) => setMessage(e.target.value)}
                     value={message}
-                    
                     InputProps={{
-                    endAdornment:
-                        <InputAdornment position="end">
-                            <IconButton
-                                aria-label="Send message"
-                                onClick={handleSubmit}
-                                edge="end"
-                            >
-                                <SendIcon color="primary"/>
-                            </IconButton>
-                        </InputAdornment>
-                    
-                }}
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="Send message"
+                                    onClick={handleSubmit}
+                                    edge="end"
+                                >
+                                    <SendIcon color="primary" />
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
                 />
                 {/* <Button onClick={handleSubmit}>send</Button> */}
             </FormControl>

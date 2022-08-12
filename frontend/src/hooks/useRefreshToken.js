@@ -11,6 +11,7 @@ const useRefreshToken = () => {
             name: response?.data.name,
             email: response?.data.email,
             accessToken: response?.data.accessToken,
+            id: response?.data._id,
         });
         return response.data.accessToken;
     };

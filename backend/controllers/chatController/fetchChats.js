@@ -9,7 +9,7 @@ const fetchChats = async (req, res) => {
                 "-password -refreshToken -__v -createdAt -updatedAt"
             )
             .populate(
-                "goupAdmin",
+                "groupAdmin",
                 "-password -refreshToken -__v -createdAt -updatedAt"
             )
             .populate("latestMessage")
