@@ -43,7 +43,7 @@ export default ({
                         <>
                             <Typography variant="body2"
                             component="span">
-                                {latestMessageSender}:{" "}
+                                {latestMessageSender}{" "}
                             </Typography>
                             <Typography
                                 sx={{ display: "inline" }}

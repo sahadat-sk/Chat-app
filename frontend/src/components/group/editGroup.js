@@ -20,16 +20,36 @@ import React, { useEffect, useState } from "react";
 
 import AxoisPrivate from "../../hooks/useAxiosPrivate.js";
 
-const GroupDialog = ({ showModal, setShowModal }) => {
+const GroupDialog = ({
+    showGroupEdit,
+    setShowGroupEdit,
+    selectedChat,
+    selectedChatName,
+}) => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
     const [selectedUsers, setSelectedUsers] = useState([]);
-    const [chatName,setChatName] = useState("");
+    const [chatName, setChatName] = useState(selectedChatName);
 
     // const [anchorEl, setAnchorEl] = React.useState(null);
 
     const axios = AxoisPrivate();
+
+    useEffect(() => {
+        const getUsers = async () => {
+            try {
+                const { data } = await axios.get(
+                    "chats/getusers/" + selectedChat
+                );
+                setSelectedUsers(data.users);
+                //console.log("add to group", data.users);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        getUsers();
+    }, [showGroupEdit]);
 
     useEffect(() => {
         setLoading(true);
@@ -48,60 +68,72 @@ const GroupDialog = ({ showModal, setShowModal }) => {
     }, [search]);
 
     const handleClose = () => {
-        setShowModal(false);
+        setShowGroupEdit(false);
         setSearch("");
         setSelectedUsers([]);
     };
 
     const handleCreate = () => {
-        setShowModal(false);
+        setShowGroupEdit(false);
         setSearch("");
         setSelectedUsers([]);
         setChatName("");
-        let users = selectedUsers.map((user) => user.userId);
-        const createGroup = async () => {
-            try {
-                const { data } = await axios.post("/chats/newgroupchat", {
-                    users: JSON.stringify(users),
-                    chatName,
-                });
-            } catch (err) {
-                console.error(err);
-            }
-        };
+        const createGroup = async () => {};
         createGroup();
     };
 
     const handleClick = (username, userId) => {
-        if (
-            selectedUsers.filter(
-                (selecteduser) => selecteduser.userId === userId
-            ).length === 0
-        ) {
-            setSelectedUsers([...selectedUsers, { username, userId }]);
+        const addUser = async () => {
+            try {
+                const { data } = await axios.put(
+                    "chats/adduser/" ,
+                    {
+                        chatId: selectedChat,
+                        userId,
+                    }
+                );
+                setSelectedUsers(data.users);
+            } catch (err) {
+                console.error(err);
+                if (err.response.status === 403) {
+                    console.log("balabala");
+                }
+            }
         }
+        addUser();
         setSearch("");
         // console.log(selectedUsers);
     };
     const handleDelete = (userId) => {
-        setSelectedUsers(
-            selectedUsers.filter(
-                (selecteduser) => selecteduser.userId !== userId
-            )
-        );
+        const deleteUser = async () => {
+            try {
+                const { data } = await axios.put("chats/removeuser", {
+                    chatId: selectedChat,
+                    userId,
+                });
+                setSelectedUsers(data.users);
+            } catch (err) {
+                console.error(err);
+                if(err.response.status === 403) {
+                    console.log("balabala");
+                }
+            }
+        };
+        deleteUser();
     };
 
     return (
-        <Dialog open={showModal} onClose={handleClose}>
-            <DialogTitle>Create Group</DialogTitle>
+        <Dialog open={showGroupEdit} onClose={handleClose}>
+            <DialogTitle>Edit Group</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    <Stack direction="row" gap={.5}>
+                    <Stack direction="row" gap={0.5}>
                         {selectedUsers.length > 0 &&
                             selectedUsers.map((user) => (
                                 <Chip
-                                    label={user.username}
-                                    onDelete={() => handleDelete(user.userId)}
+                                    key={user._id}
+                                    label={user.name}
+                                    onDelete={() => handleDelete(user._id)}
                                     color="primary"
                                 />
                             ))}
@@ -162,7 +194,7 @@ const GroupDialog = ({ showModal, setShowModal }) => {
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
                 <Button onClick={handleCreate} variant="contained">
-                    Create
+                    Rename
                 </Button>
             </DialogActions>
         </Dialog>

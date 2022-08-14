@@ -12,7 +12,7 @@ const newGroupChat = async (req, res) => {
             .json({ message: "More than 2 members are required" });
     }
     users.push(req.user.id);
-    console.log(users);
+   // console.log(users);
     try {
         const groupChat = await Chat.create({
             chatName,

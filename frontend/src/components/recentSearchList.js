@@ -68,12 +68,14 @@ export default function AlignItemsList({
                                     userId={chat._id}
                                     setSelectedChat={setSelectedChat}
                                     setSelectedChatName={setSelectedChatName}
-                                    latestMessage={chat.latestMessage.content}
+                                    latestMessage={chat.latestMessage?.content || "start chatting"}
                                     latestMessageSender={
+                                        chat.latestMessage?
                                         auth.id ===
                                         chat.latestMessage.sender._id
                                             ? "You"
                                             : chat.latestMessage.sender.name
+                                        : ""
                                     }
                                 />
                             ))}

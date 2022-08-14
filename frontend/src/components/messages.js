@@ -1,11 +1,8 @@
 import {
     Box,
-  
     FormControl,
     IconButton,
-   
     InputAdornment,
-    
     Stack,
     TextField,
     Typography,
@@ -13,15 +10,17 @@ import {
 import React, { useEffect, useState } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate.js";
 import SendIcon from "@mui/icons-material/Send";
+import EditIcon from "@mui/icons-material/Edit";
+import EditGroup from "./group/editGroup.js";
 
 import useAuth from "../hooks/useAuth.js";
 
-const Messages = ({ selectedChat ,selectedChatName}) => {
+const Messages = ({ selectedChat, selectedChatName }) => {
     const axios = useAxiosPrivate();
 
     const [messages, setMessages] = useState([]);
-    
     const [message, setMessage] = useState("");
+    const [showGroupEdit, setShowGroupEdit] = useState(false);
 
     const { auth } = useAuth();
 
@@ -41,13 +40,12 @@ const Messages = ({ selectedChat ,selectedChatName}) => {
         }
     };
 
-    
-
     useEffect(() => {
         const setData = async () => {
             try {
-                
-                const messagesData = await axios.get("/messages/" + selectedChat);
+                const messagesData = await axios.get(
+                    "/messages/" + selectedChat
+                );
                 setMessages(messagesData.data);
                 //console.log("messages", messagesData.data);
             } catch (err) {
@@ -58,92 +56,111 @@ const Messages = ({ selectedChat ,selectedChatName}) => {
     }, [selectedChat]);
 
     return (
-        <Box
-            sx={{
-                width: "70%",
-                height: "100%",
-                backgroundColor: "background.paper",
-                padding: ".5rem",
-            }}
-        >
-            <Typography variant="h5" sx={{ height: "10%" }}>
-                {selectedChatName}
-            </Typography>
-            <Stack
-                direction="column-reverse"
+        <>
+            <EditGroup
+                showGroupEdit={showGroupEdit}
+                setShowGroupEdit={setShowGroupEdit}
+                selectedChat={selectedChat}
+                selectedChatName={selectedChatName}
+            />
+            <Box
                 sx={{
-                    width: "100%",
-                    height: "84%",
-                    backgroundColor: "#eceff1",
+                    width: "70%",
+                    height: "100%",
+                    backgroundColor: "background.paper",
+                    padding: ".5rem",
                 }}
             >
-                {selectedChat === "" && "nothing to display"}
-                {selectedChat !== "" &&
-                    messages?.map((message) => (
-                        <Typography
-                            key={message._id}
-                            sx={{
-                                width: "100%",
-                                height: "1.4rem",
-
-                                padding: ".5rem",
-                                margin: ".1rem",
-                                textAlign:
-                                    message.sender._id === auth.id
-                                        ? "right"
-                                        : "left",
-                                color:
-                                    message.sender._id === auth.id
-                                        ? "white"
-                                        : "black",
-                            }}
-                        >
+                <Typography variant="h5" sx={{ height: "10%" }}>
+                    <Stack
+                        direction="row"
+                        alignItems="center"
+                        justifyContent="space-between"
+                        gap={2}
+                        height="100%"
+                    >
+                        {selectedChatName}
+                        <IconButton>
+                            <EditIcon onClick={() => setShowGroupEdit(true)} />
+                        </IconButton>
+                    </Stack>
+                </Typography>
+                <Stack
+                    direction="column-reverse"
+                    sx={{
+                        width: "100%",
+                        height: "84%",
+                        backgroundColor: "#eceff1",
+                    }}
+                >
+                    {selectedChat === "" && "nothing to display"}
+                    {selectedChat !== "" &&
+                        messages?.map((message) => (
                             <Typography
-                                component="span"
+                                key={message._id}
                                 sx={{
-                                    backgroundColor:
+                                    width: "100%",
+                                    height: "1.4rem",
+
+                                    padding: ".5rem",
+                                    margin: ".1rem",
+                                    textAlign:
                                         message.sender._id === auth.id
-                                            ? "primary.main"
-                                            : "#cfd8dc",
-                                    padding: ".7rem",
-                                    borderRadius: "1rem",
-                                    margin: "1rem",
-                                    ml: "0rem",
+                                            ? "right"
+                                            : "left",
+                                    color:
+                                        message.sender._id === auth.id
+                                            ? "white"
+                                            : "black",
                                 }}
                             >
-                                {/* <Typography variant="body2">
+                                <Typography
+                                    component="span"
+                                    sx={{
+                                        backgroundColor:
+                                            message.sender._id === auth.id
+                                                ? "primary.main"
+                                                : "#cfd8dc",
+                                        padding: ".7rem",
+                                        borderRadius: "1rem",
+                                        margin: "1rem",
+                                        ml: "0rem",
+                                    }}
+                                >
+                                    {/* <Typography variant="body2">
                                     {message.sender.name}
                                 </Typography>  STYLING PROBLEM !!!*/}
-                                {message.content}
+                                    {message.content}
+                                </Typography>
                             </Typography>
-                        </Typography>
-                    ))}
-            </Stack>
-            <FormControl fullWidth sx={{ mt: 1 }} variant="standard">
-                <TextField
-                    hiddenLabel
-                    id="filled-hidden-label-small"
-                    variant="outlined"
-                    size="small"
-                    onChange={(e) => setMessage(e.target.value)}
-                    value={message}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="Send message"
-                                    onClick={handleSubmit}
-                                    edge="end"
-                                >
-                                    <SendIcon color="primary" />
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                />
-                {/* <Button onClick={handleSubmit}>send</Button> */}
-            </FormControl>
-        </Box>
+                        ))}
+                </Stack>
+                <FormControl fullWidth sx={{ mt: 1 }} variant="standard">
+                    <TextField
+                        hiddenLabel
+                        id="filled-hidden-label-small"
+                        variant="outlined"
+                        size="small"
+                        onChange={(e) => setMessage(e.target.value)}
+                        value={message}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="Send message"
+                                        onClick={handleSubmit}
+                                        edge="end"
+                                    >
+                                        <SendIcon color="primary" />
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    {/* <Button onClick={handleSubmit}>send</Button> */}
+                </FormControl>
+            </Box>
+        </>
     );
 };
 

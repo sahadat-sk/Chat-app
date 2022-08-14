@@ -8,6 +8,7 @@ const {
     renameGroup,
     removeFromGroup,
     addToGroup,
+    getUsersInGroup,
 } = require("../controllers/chatController/editGroup");
 
 router.post("/", accessChat);
@@ -16,5 +17,6 @@ router.post("/newgroupchat", newGroupChat);
 router.put("/rename", renameGroup);
 router.put("/adduser", addToGroup);
 router.put("/removeuser", removeFromGroup);
+router.get("/getusers/:id",getUsersInGroup);
 
 module.exports = router;
