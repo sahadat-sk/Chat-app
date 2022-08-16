@@ -15,6 +15,7 @@ const Chats = () => {
     const [search, setSearch] = useState("");
     const [selectedChat, setSelectedChat] = useState("");//stores the id of the chat?
     const [selectedChatName, setSelectedChatName] = useState("");
+    const [isGroupChat, setIsGroupChat] = useState(false);
     const [newGroup, setNewGroup] = useState(false);
 
     return (
@@ -39,10 +40,12 @@ const Chats = () => {
                     setSelectedChat={setSelectedChat}
                     setSelectedChatName={setSelectedChatName}
                     setNewGroup={setNewGroup}
+                    setIsGroupChat={setIsGroupChat}
                 />
                 <Messages
                     selectedChat={selectedChat}
                     selectedChatName={selectedChatName}
+                    isGroupChat={isGroupChat}
                 />
                 <GroupDialog showModal={newGroup} setShowModal={setNewGroup} />
             </Stack>

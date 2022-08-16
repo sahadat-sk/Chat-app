@@ -30,7 +30,7 @@ const GroupDialog = ({
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
     const [selectedUsers, setSelectedUsers] = useState([]);
-    const [chatName, setChatName] = useState(selectedChatName);
+    const [chatName, setChatName] = useState(selectedChatName + "");
 
     // const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -43,6 +43,7 @@ const GroupDialog = ({
                     "chats/getusers/" + selectedChat
                 );
                 setSelectedUsers(data.users);
+                //console.log(chatName);
                 //console.log("add to group", data.users);
             } catch (err) {
                 console.error(err);
@@ -78,7 +79,16 @@ const GroupDialog = ({
         setSearch("");
         setSelectedUsers([]);
         setChatName("");
-        const createGroup = async () => {};
+        const createGroup = async () => {
+            try {
+                const { data } = await axios.put("/chats/rename", {
+                    chatId: selectedChat,
+                    chatName,
+                });
+            } catch (err) {
+                console.error(err);
+            }
+        };
         createGroup();
     };
 

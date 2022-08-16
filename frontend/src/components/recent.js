@@ -2,7 +2,7 @@ import { Box, Button, Stack, Typography } from '@mui/material'
 import React from 'react'
 import RecentSearch from "./recentSearchList";
 
-const Recent = ({ setSelectedChat,setSelectedChatName,setNewGroup }) => {
+const Recent = ({ setSelectedChat,setSelectedChatName,setNewGroup,setIsGroupChat }) => {
     const handleOpen = () => {
         setNewGroup(true);
     }
@@ -27,7 +27,7 @@ const Recent = ({ setSelectedChat,setSelectedChatName,setNewGroup }) => {
                 <Typography variant="h5">Recent Chats</Typography>
                 <Button variant="outlined" onClick={handleOpen}>Create Group Chat</Button>
             </Stack>
-            <RecentSearch setSelectedChat={setSelectedChat} setSelectedChatName={setSelectedChatName}/>
+            <RecentSearch setSelectedChat={setSelectedChat} setSelectedChatName={setSelectedChatName} setIsGroupChat={setIsGroupChat}/>
         </Box>
     );
 };
