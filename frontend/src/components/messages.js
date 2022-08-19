@@ -15,6 +15,10 @@ import EditGroup from "./group/editGroup.js";
 
 import useAuth from "../hooks/useAuth.js";
 
+import io from "socket.io-client";
+
+var socket;
+
 const Messages = ({ selectedChat, selectedChatName }) => {
     const axios = useAxiosPrivate();
 
@@ -24,12 +28,22 @@ const Messages = ({ selectedChat, selectedChatName }) => {
 
     const { auth } = useAuth();
 
+    useEffect(() => {
+        socket = io("http://localhost:5000");
+        socket.emit("setup", { id: auth.id });
+    }, []);
+
     const handleSubmit = async () => {
         const sendMessage = async () => {
             try {
                 const { data } = await axios.post("/messages/" + selectedChat, {
                     message,
                 });
+                console.log("new message", selectedChat);
+                socket.emit("new message", data.chat.users, data.sender, data);
+                let newMessages = [...messages];
+                newMessages.unshift(data);
+                setMessages(newMessages);
             } catch (err) {
                 console.log(err);
             }
@@ -52,8 +66,28 @@ const Messages = ({ selectedChat, selectedChatName }) => {
                 console.error(err);
             }
         };
+        socket.emit("join chat", selectedChat);
         setData();
     }, [selectedChat]);
+
+    useEffect(() => {
+        //console.log("running");
+        // while(!selectedChat){
+        //     console.log("waiting....");
+        // }
+        socket.on("message received", (newMessage) => {
+            //                     console.log(messages);
+            if (!selectedChat || selectedChat !== newMessage.chat._id) {
+                
+            } else {
+                console.log("new message", newMessage);
+                let newMessages = [...messages];
+                newMessages.unshift(newMessage);
+                setMessages(newMessages);
+                console.log(newMessages);
+            }
+        });
+    });
 
     return (
         <>
@@ -91,6 +125,7 @@ const Messages = ({ selectedChat, selectedChatName }) => {
                         width: "100%",
                         height: "84%",
                         backgroundColor: "#eceff1",
+                        overflowY: "scroll",
                     }}
                 >
                     {selectedChat === "" && "nothing to display"}
@@ -135,7 +170,7 @@ const Messages = ({ selectedChat, selectedChatName }) => {
                             </Typography>
                         ))}
                 </Stack>
-                <FormControl fullWidth sx={{ mt: 1 }} variant="standard">
+               {selectedChat &&  <FormControl fullWidth sx={{ mt: 1 }} variant="standard">
                     <TextField
                         hiddenLabel
                         id="filled-hidden-label-small"
@@ -159,6 +194,7 @@ const Messages = ({ selectedChat, selectedChatName }) => {
                     />
                     {/* <Button onClick={handleSubmit}>send</Button> */}
                 </FormControl>
+}
             </Box>
         </>
     );

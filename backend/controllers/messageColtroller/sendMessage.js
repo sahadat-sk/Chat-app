@@ -19,7 +19,7 @@ const sendMessage = async (req, res) => {
         const FullMessage = await Messages.findById(createMessage._id).populate(
             "sender",
             "name pic"
-        );
+        ).populate("chat");
         await Chat.findByIdAndUpdate(chatId, { latestMessage: createMessage._id });
         res.status(201).json(FullMessage);
     } catch (err) {
