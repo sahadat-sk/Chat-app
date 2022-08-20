@@ -70,8 +70,9 @@ io.on("connection", (socket) => {
         //console.log("messge sender", users);
         users.forEach((user) => {
             if (user !== sender._id) {
-                console.log("sending to", user);
+                //console.log("sending to", user);
                 socket.in(user).emit("message received", message);
+                //console.log("message sent",message);
             }
         });
     });

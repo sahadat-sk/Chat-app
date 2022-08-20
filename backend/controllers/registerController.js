@@ -34,7 +34,7 @@ const handleNewUser = async (req, res) => {
         //cookie with refrest token
         res.cookie("jwt", refreshToken, {
             httpOnly: true,
-            secure: false, // change this is production
+            secure: true, // change this is production
             sameSite: "None",
             maxAge: 24 * 60 * 60 * 1000,
         });
