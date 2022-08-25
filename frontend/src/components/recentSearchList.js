@@ -12,30 +12,33 @@ import useAuth from "../hooks/useAuth.js";
 export default function AlignItemsList({
     setSelectedChat,
     setSelectedChatName,
+    reRenderChats
 }) {
     const [chats, setChats] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const { auth } = useAuth();
 
     const axios = AxoisPrivate();
 
     useEffect(() => {
-        setLoading(true);
+        //setLoading(true);
         const setData = async () => {
             try {
-                setLoading(true);
+               // setLoading(true);
                 const { data } = await axios.get("/chats/");
                 setChats(data);
                 //console.log(auth.id);
                 //console.log(data[0].latestMessage);
-                setLoading(false);
+               // setLoading(false);
             } catch (err) {
                 console.log(err);
             }
         };
         setData();
-    }, []);
+    },[reRenderChats]);
+
+    
 
     const getChatName = (users) => {
         //console.log(users);
@@ -43,6 +46,7 @@ export default function AlignItemsList({
         //console.log(name)
         return name;
     };
+
 
     return (
         <>
@@ -77,6 +81,8 @@ export default function AlignItemsList({
                                             : chat.latestMessage.sender.name
                                         : ""
                                     }
+                                    latestMessageId={chat.latestMessage?._id || null }
+                                    isRead = {chat.latestMessage?.readBy.includes(auth.id)?true:false}
                                 />
                             ))}
                         {chats.length === 0 && (

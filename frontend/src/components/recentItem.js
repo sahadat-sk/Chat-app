@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import useAuth from "../hooks/useAuth.js"
 
 export default ({
     name,
@@ -17,11 +18,22 @@ export default ({
     setSelectedChat,
     setSelectedChatName,
     latestMessage,
-    latestMessageSender
+    latestMessageSender,
+    latestMessageId,
+    isRead
 }) => {
+    const {auth} = useAuth();
+    const axios = useAxiosPrivate();
     const handleClick = () => {
         setSelectedChat(userId);
         setSelectedChatName(name);
+        if(latestMessageId){
+        
+            axios.put("/messages/readby", {
+                messageId: latestMessageId,
+                userId: auth.id,
+            });
+        }
     };
 
     return (
@@ -49,7 +61,8 @@ export default ({
                                 sx={{ display: "inline" }}
                                 component="span"
                                 variant="body2"
-                                color="text.primary"
+                                color= {isRead?"text.primary":"green"}
+
                             >
                                 {latestMessage}
                             </Typography>

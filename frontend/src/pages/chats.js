@@ -17,6 +17,7 @@ const Chats = () => {
     const [selectedChatName, setSelectedChatName] = useState("");
     const [isGroupChat, setIsGroupChat] = useState(false);
     const [newGroup, setNewGroup] = useState(false);
+    const [reRenderChats,setReRenderChats] = useState(false);
 
     return (
         <div className="ChatsContainer">
@@ -41,11 +42,14 @@ const Chats = () => {
                     setSelectedChatName={setSelectedChatName}
                     setNewGroup={setNewGroup}
                     setIsGroupChat={setIsGroupChat}
+                    reRenderChats={reRenderChats}
                 />
                 <Messages
                     selectedChat={selectedChat}
                     selectedChatName={selectedChatName}
                     isGroupChat={isGroupChat}
+                    reRenderChats={reRenderChats}
+                    setReRenderChats={setReRenderChats}
                 />
                 <GroupDialog showModal={newGroup} setShowModal={setNewGroup} />
             </Stack>

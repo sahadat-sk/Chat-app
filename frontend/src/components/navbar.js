@@ -16,6 +16,8 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import UseLogout from "../hooks/useLogout";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { TextField } from "@mui/material";
 
 const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -61,7 +63,7 @@ export default function PrimarySearchAppBar({
     showModal,
     setShowModal,
     setShowSearch,
-    setSearch
+    setSearch,
 }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -186,59 +188,74 @@ export default function PrimarySearchAppBar({
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
+            <AppBar
+                position="static"
+                sx={{
+                    width: "100vw",
+                    height: "105px",
+                }}
+            >
                 <Toolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="open drawer"
-                        sx={{ mr: 2 }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        sx={{ display: { xs: "none", sm: "block" } }}
-                    >
-                        GIGA Chat
-                    </Typography>
-                    <Search
+                    <TextField
+                        hiddenLabel
                         onChange={handleSearch}
                         onBlur={handleSearchBlur}
                         onFocus={handleSearch}
+                        component="div"
+                        placeholder="   search user"
+                        sx={{
+                            position: "absolute",
+                            height: "54px",
+                            // left: "20px",
+                            // top: "25px",
+                            borderRadius: "20px",
+                            width: "28.5vw",
+                            background: "#D9D9D9",
+                            outline: "none",
+                            border: "none",
+                            fontSize: "2rem",
+                        }}
+                    ></TextField>
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        //component="div"
+                        sx={{
+                            display: { xs: "none", sm: "block" },
+                            height: "105px",
+                            width: "100%",
+                            fontSize: "64px",
+                            lineHeight: "76px",
+                            lineWeight: "100%",
+                            textAlign: "Center",
+                            verticalAlign: "Center",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            fontWeight: "bold",
+                        }}
                     >
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            placeholder="Search user"
-                            inputProps={{ "aria-label": "search" }}
-                        />
-                    </Search>
+                        GIGA Chat
+                    </Typography>
+
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                        <IconButton
-                            size="large"
-                            aria-label="show 17 new notifications"
-                            color="inherit"
-                        >
-                            <Badge badgeContent={17} color="error">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
                         <IconButton
                             size="large"
                             edge="end"
                             aria-label="account of current user"
                             aria-controls={menuId}
                             aria-haspopup="true"
-                            onClick={handleProfileMenuOpen}
+                            onClick={handleLogout}
                             color="inherit"
                         >
-                            <AccountCircle />
+                            <LogoutIcon
+                                sx={{
+                                    width: "40px",
+                                    height: "40px",
+                                    
+                                }}
+                            />
                         </IconButton>
                     </Box>
                     <Box sx={{ display: { xs: "flex", md: "none" } }}>

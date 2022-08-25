@@ -1,11 +1,17 @@
-import { Box, Button, Stack, Typography } from '@mui/material'
-import React from 'react'
+import { Box, Button, Stack, Typography } from "@mui/material";
+import React from "react";
 import RecentSearch from "./recentSearchList";
 
-const Recent = ({ setSelectedChat,setSelectedChatName,setNewGroup,setIsGroupChat }) => {
+const Recent = ({
+    setSelectedChat,
+    setSelectedChatName,
+    setNewGroup,
+    setIsGroupChat,
+    reRenderChats,
+}) => {
     const handleOpen = () => {
         setNewGroup(true);
-    }
+    };
     return (
         <Box
             sx={{
@@ -25,11 +31,18 @@ const Recent = ({ setSelectedChat,setSelectedChatName,setNewGroup,setIsGroupChat
                 mb={0.3}
             >
                 <Typography variant="h5">Recent Chats</Typography>
-                <Button variant="outlined" onClick={handleOpen}>Create Group Chat</Button>
+                <Button variant="outlined" onClick={handleOpen}>
+                    Create Group Chat
+                </Button>
             </Stack>
-            <RecentSearch setSelectedChat={setSelectedChat} setSelectedChatName={setSelectedChatName} setIsGroupChat={setIsGroupChat}/>
+            <RecentSearch
+                setSelectedChat={setSelectedChat}
+                setSelectedChatName={setSelectedChatName}
+                setIsGroupChat={setIsGroupChat}
+                reRenderChats={reRenderChats}
+            />
         </Box>
     );
 };
 
-export default Recent
+export default Recent;

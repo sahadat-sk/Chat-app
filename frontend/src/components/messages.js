@@ -19,12 +19,18 @@ import io from "socket.io-client";
 
 var socket;
 
-const Messages = ({ selectedChat, selectedChatName }) => {
+const Messages = ({
+    selectedChat,
+    selectedChatName,
+    reRenderChats,
+    setReRenderChats,
+}) => {
     const axios = useAxiosPrivate();
 
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState("");
     const [showGroupEdit, setShowGroupEdit] = useState(false);
+    const [currChatId, setCurrChatId] = useState(selectedChat);
 
     const { auth } = useAuth();
 
@@ -39,10 +45,15 @@ const Messages = ({ selectedChat, selectedChatName }) => {
                 const { data } = await axios.post("/messages/" + selectedChat, {
                     message,
                 });
-                console.log("new message", selectedChat);
+                //console.log("new message", selectedChat);
                 socket.emit("new message", data.chat.users, data.sender, data);
                 let newMessages = [...messages];
                 newMessages.unshift(data);
+                axios.put("/messages/readby", {
+                    messageId: data._id,
+                    userId: auth.id,
+                });
+
                 setMessages(newMessages);
             } catch (err) {
                 console.log(err);
@@ -61,11 +72,13 @@ const Messages = ({ selectedChat, selectedChatName }) => {
                     "/messages/" + selectedChat
                 );
                 setMessages(messagesData.data);
+
                 //console.log("messages", messagesData.data);
             } catch (err) {
                 console.error(err);
             }
         };
+        setCurrChatId(selectedChat);
         socket.emit("join chat", selectedChat);
         setData();
     }, [selectedChat]);
@@ -77,14 +90,19 @@ const Messages = ({ selectedChat, selectedChatName }) => {
         // }
         socket.on("message received", (newMessage) => {
             //                     console.log(messages);
-            if (!selectedChat || selectedChat !== newMessage.chat._id) {
-                
+            setReRenderChats(!reRenderChats);
+            if (!selectedChat || currChatId !== newMessage.chat._id) {
             } else {
-                console.log("new message", newMessage);
+                // console.log("new message", newMessage.chat);
+                // console.log("selected chat", currChatId);
                 let newMessages = [...messages];
                 newMessages.unshift(newMessage);
                 setMessages(newMessages);
-                console.log(newMessages);
+                axios.put("/messages/readby", {
+                    messageId: newMessage._id,
+                    userId: auth.id,
+                });
+                // console.log(newMessages);
             }
         });
     });
@@ -170,31 +188,32 @@ const Messages = ({ selectedChat, selectedChatName }) => {
                             </Typography>
                         ))}
                 </Stack>
-               {selectedChat &&  <FormControl fullWidth sx={{ mt: 1 }} variant="standard">
-                    <TextField
-                        hiddenLabel
-                        id="filled-hidden-label-small"
-                        variant="outlined"
-                        size="small"
-                        onChange={(e) => setMessage(e.target.value)}
-                        value={message}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="Send message"
-                                        onClick={handleSubmit}
-                                        edge="end"
-                                    >
-                                        <SendIcon color="primary" />
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                    {/* <Button onClick={handleSubmit}>send</Button> */}
-                </FormControl>
-}
+                {selectedChat && (
+                    <FormControl fullWidth sx={{ mt: 1 }} variant="standard">
+                        <TextField
+                            hiddenLabel
+                            id="filled-hidden-label-small"
+                            variant="outlined"
+                            size="small"
+                            onChange={(e) => setMessage(e.target.value)}
+                            value={message}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="Send message"
+                                            onClick={handleSubmit}
+                                            edge="end"
+                                        >
+                                            <SendIcon color="primary" />
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                        {/* <Button onClick={handleSubmit}>send</Button> */}
+                    </FormControl>
+                )}
             </Box>
         </>
     );
