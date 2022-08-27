@@ -17,7 +17,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import UseLogout from "../hooks/useLogout";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { TextField } from "@mui/material";
+import { InputAdornment, Paper, TextField } from "@mui/material";
 
 const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -191,31 +191,55 @@ export default function PrimarySearchAppBar({
             <AppBar
                 position="static"
                 sx={{
-                    width: "100vw",
-                    height: "105px",
+                    width: "100%",
+                    height: "9vh",
                 }}
             >
                 <Toolbar>
-                    <TextField
-                        hiddenLabel
-                        onChange={handleSearch}
-                        onBlur={handleSearchBlur}
-                        onFocus={handleSearch}
-                        component="div"
-                        placeholder="   search user"
+                    <Paper
                         sx={{
                             position: "absolute",
                             height: "54px",
+
                             // left: "20px",
                             // top: "25px",
-                            borderRadius: "20px",
-                            width: "28.5vw",
-                            background: "#D9D9D9",
+                            borderRadius: "5px",
+                            width: "20vw",
+                            background: "white",
                             outline: "none",
                             border: "none",
-                            fontSize: "2rem",
+                            fontSize: "24px",
+                            pl: "1rem",
+                            display:"flex",
+                            alignItems:"center",
+                            justifyContent:"space-between"
                         }}
-                    ></TextField>
+                    >
+                        <InputBase
+                            hiddenLabel
+                            onChange={handleSearch}
+                            onBlur={handleSearchBlur}
+                            onFocus={handleSearch}
+                            // component="div"
+                            placeholder="Search user"
+                            // sx={{
+                            //     position: "absolute",
+                            //     height: "54px",
+                            //     // left: "20px",
+                            //     // top: "25px",
+                            //     borderRadius: "5px",
+                            //     width: "28.5vw",
+                            //     background: "#D9D9D9",
+                            //     outline: "none",
+                            //     border: "none",
+                            //     fontSize: "24px",
+                            //     pl: "1rem",
+                            // }}
+                        ></InputBase>
+                        <IconButton>
+                            <SearchIcon></SearchIcon>
+                        </IconButton>
+                    </Paper>
                     <Typography
                         variant="h6"
                         noWrap
@@ -224,7 +248,7 @@ export default function PrimarySearchAppBar({
                             display: { xs: "none", sm: "block" },
                             height: "105px",
                             width: "100%",
-                            fontSize: "64px",
+                            fontSize: "58px",
                             lineHeight: "76px",
                             lineWeight: "100%",
                             textAlign: "Center",
@@ -251,9 +275,8 @@ export default function PrimarySearchAppBar({
                         >
                             <LogoutIcon
                                 sx={{
-                                    width: "40px",
-                                    height: "40px",
-                                    
+                                    width: "35px",
+                                    height: "35px",
                                 }}
                             />
                         </IconButton>

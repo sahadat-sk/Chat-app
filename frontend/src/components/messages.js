@@ -1,4 +1,5 @@
 import {
+    Avatar,
     Box,
     FormControl,
     IconButton,
@@ -116,22 +117,53 @@ const Messages = ({
                 selectedChatName={selectedChatName}
             />
             <Box
+                // sx={{
+                //     width: "70%",
+                //     height: "100%",
+                //     backgroundColor: "background.paper",
+                //     padding: ".5rem",
+                // }}
                 sx={{
-                    width: "70%",
-                    height: "100%",
-                    backgroundColor: "background.paper",
-                    padding: ".5rem",
+                    position: "absolute",
+                    width: "75vw",
+                    height: "90vh",
+                    left: "475px",
+                    //top: "54px",
+                    // pb: "1rem",
+                    background: "#D9D9D9",
+                    
                 }}
             >
-                <Typography variant="h5" sx={{ height: "10%" }}>
+                <Typography
+                    variant="h5"
+                    sx={{
+                        height: "10%",
+                        fontWeight: "500",
+                        fontSize: "2rem",
+                        ml: "2rem",
+                        color: "black",
+                    }}
+                >
                     <Stack
                         direction="row"
                         alignItems="center"
                         justifyContent="space-between"
-                        gap={2}
+                        //gap={2}
                         height="100%"
                     >
-                        {selectedChatName}
+                        <Stack
+                            direction="row"
+                            gap={1}
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <Avatar
+                                alt={selectedChatName}
+                                src="../hash.jpg"
+                            ></Avatar>
+
+                            {selectedChatName}
+                        </Stack>
                         <IconButton>
                             <EditIcon onClick={() => setShowGroupEdit(true)} />
                         </IconButton>
@@ -141,7 +173,7 @@ const Messages = ({
                     direction="column-reverse"
                     sx={{
                         width: "100%",
-                        height: "84%",
+                        height: "83%",
                         backgroundColor: "#eceff1",
                         overflowY: "scroll",
                     }}

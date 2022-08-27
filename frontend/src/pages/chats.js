@@ -28,7 +28,7 @@ const Chats = () => {
                 setSearch={setSearch}
             />
             <Dialog showModal={showModal} setShowModal={setShowModal} />
-            {showSearch && <SearchList search={search} />}
+            {showSearch && <SearchList search={search} reRenderChats={reRenderChats} setReRenderChats={setReRenderChats}/>}
             <Stack
                 direction={["column", "column", "row"]}
                 sx={{
