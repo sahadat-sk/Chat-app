@@ -13,6 +13,7 @@ export default function AlignItemsList({
     setSelectedChat,
     setSelectedChatName,
     reRenderChats,
+    setIsGroupChat
 }) {
     const [chats, setChats] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -90,6 +91,8 @@ export default function AlignItemsList({
                                             ? true
                                             : false
                                     }
+                                    isGroup = {chat.isGroupChat}
+                                    setIsGroupChat={setIsGroupChat}
                                 />
                             ))}
                         {chats.length === 0 && (

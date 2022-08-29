@@ -41,7 +41,7 @@ const Recent = ({
                 //borderBottom={.5}
                 //mb={0.3}
             >
-                <Typography variant="h5">Recent Chats</Typography>
+                <Typography variant="h5" sx={{fontWeight:"bold"}}>Recent Chats</Typography>
                 {/* <Button variant="outlined" onClick={handleOpen}>
                     Create Group Chat
                 </Button> */}

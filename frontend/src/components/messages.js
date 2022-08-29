@@ -4,6 +4,8 @@ import {
     FormControl,
     IconButton,
     InputAdornment,
+    InputBase,
+    Paper,
     Stack,
     TextField,
     Typography,
@@ -13,6 +15,7 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate.js";
 import SendIcon from "@mui/icons-material/Send";
 import EditIcon from "@mui/icons-material/Edit";
 import EditGroup from "./group/editGroup.js";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 import useAuth from "../hooks/useAuth.js";
 
@@ -25,6 +28,7 @@ const Messages = ({
     selectedChatName,
     reRenderChats,
     setReRenderChats,
+    isGroupChat
 }) => {
     const axios = useAxiosPrivate();
 
@@ -110,7 +114,7 @@ const Messages = ({
 
     return (
         <>
-            <EditGroup
+             <EditGroup
                 showGroupEdit={showGroupEdit}
                 setShowGroupEdit={setShowGroupEdit}
                 selectedChat={selectedChat}
@@ -130,8 +134,7 @@ const Messages = ({
                     left: "475px",
                     //top: "54px",
                     // pb: "1rem",
-                    background: "#D9D9D9",
-                    
+                    background: "#1976D2",
                 }}
             >
                 <Typography
@@ -139,9 +142,9 @@ const Messages = ({
                     sx={{
                         height: "10%",
                         fontWeight: "500",
-                        fontSize: "2rem",
-                        ml: "2rem",
-                        color: "black",
+                        fontSize: "1.7rem",
+                        ml: "1rem",
+                        color: "white",
                     }}
                 >
                     <Stack
@@ -153,30 +156,36 @@ const Messages = ({
                     >
                         <Stack
                             direction="row"
-                            gap={1}
+                            gap={5}
                             justifyContent="center"
                             alignItems="center"
                         >
-                            <Avatar
-                                alt={selectedChatName}
-                                src="../hash.jpg"
-                            ></Avatar>
-
-                            {selectedChatName}
+                            <AccountCircleIcon fontSize="large" />
+                            <Typography
+                                sx={{ fontWeight: "bold", fontSize: "1.5rem" }}
+                            >
+                                {selectedChatName}
+                            </Typography>
                         </Stack>
-                        <IconButton>
-                            <EditIcon onClick={() => setShowGroupEdit(true)} />
-                        </IconButton>
+                       {isGroupChat && <IconButton>
+                            <EditIcon
+                                sx={{ color: "white" }}
+                                onClick={() => setShowGroupEdit(true)}
+                            />
+                        </IconButton>}
                     </Stack>
                 </Typography>
                 <Stack
                     direction="column-reverse"
                     sx={{
-                        width: "100%",
-                        height: "83%",
-                        backgroundColor: "#eceff1",
-                        overflowY: "scroll",
+                        width: "75vw",
+                        height: "81%",
+                        backgroundColor: "#D1D1D1",
+                        //overflowY: "scroll",
+                        pb:"1rem"
+                        
                     }}
+                    gap={2.5}
                 >
                     {selectedChat === "" && "nothing to display"}
                     {selectedChat !== "" &&
@@ -187,8 +196,9 @@ const Messages = ({
                                     width: "100%",
                                     height: "1.4rem",
 
-                                    padding: ".5rem",
-                                    margin: ".1rem",
+                                    //padding: ".5rem",
+                                    mb: ".3em",
+                                    //margin: ".1rem",
                                     textAlign:
                                         message.sender._id === auth.id
                                             ? "right"
@@ -205,11 +215,11 @@ const Messages = ({
                                         backgroundColor:
                                             message.sender._id === auth.id
                                                 ? "primary.main"
-                                                : "#cfd8dc",
+                                                : "#EBEBEB",
                                         padding: ".7rem",
                                         borderRadius: "1rem",
-                                        margin: "1rem",
-                                        ml: "0rem",
+                                        //margin: "1rem",
+                                        //ml: "0rem",
                                     }}
                                 >
                                     {/* <Typography variant="body2">
@@ -221,28 +231,46 @@ const Messages = ({
                         ))}
                 </Stack>
                 {selectedChat && (
-                    <FormControl fullWidth sx={{ mt: 1 }} variant="standard">
-                        <TextField
-                            hiddenLabel
-                            id="filled-hidden-label-small"
-                            variant="outlined"
-                            size="small"
-                            onChange={(e) => setMessage(e.target.value)}
-                            value={message}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="Send message"
-                                            onClick={handleSubmit}
-                                            edge="end"
-                                        >
-                                            <SendIcon color="primary" />
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
+                    <FormControl fullWidth variant="standard">
+                        <Paper
+                            sx={{
+                                mt: ".1",
+                                height: "6.1vh",
+                                width: "100%",
+                                background: "white",
+                                outline: "none",
+                                border: "none",
+                                fontSize: "24px",
+                                pl: ".3rem",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
                             }}
-                        />
+                        >
+                            <InputBase
+                                hiddenLabel
+                                id="filled-hidden-label-small"
+                                variant="outlined"
+                                size="small"
+                                onChange={(e) => setMessage(e.target.value)}
+                                value={message}
+                                placeholder="Message.."
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end"></InputAdornment>
+                                    ),
+                                }}
+                            />
+                            <IconButton
+                                aria-label="Send message"
+                                onClick={handleSubmit}
+                                edge="end"
+                                sx={{ mr: "1em" }}
+                                fontSize="large"
+                            >
+                                <SendIcon color="primary" />
+                            </IconButton>
+                        </Paper>
                         {/* <Button onClick={handleSubmit}>send</Button> */}
                     </FormControl>
                 )}

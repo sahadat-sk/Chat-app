@@ -193,6 +193,7 @@ export default function PrimarySearchAppBar({
                 sx={{
                     width: "100%",
                     height: "9vh",
+                    
                 }}
             >
                 <Toolbar>
@@ -210,9 +211,9 @@ export default function PrimarySearchAppBar({
                             border: "none",
                             fontSize: "24px",
                             pl: "1rem",
-                            display:"flex",
-                            alignItems:"center",
-                            justifyContent:"space-between"
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
                         }}
                     >
                         <InputBase
@@ -222,19 +223,7 @@ export default function PrimarySearchAppBar({
                             onFocus={handleSearch}
                             // component="div"
                             placeholder="Search user"
-                            // sx={{
-                            //     position: "absolute",
-                            //     height: "54px",
-                            //     // left: "20px",
-                            //     // top: "25px",
-                            //     borderRadius: "5px",
-                            //     width: "28.5vw",
-                            //     background: "#D9D9D9",
-                            //     outline: "none",
-                            //     border: "none",
-                            //     fontSize: "24px",
-                            //     pl: "1rem",
-                            // }}
+                         
                         ></InputBase>
                         <IconButton>
                             <SearchIcon></SearchIcon>

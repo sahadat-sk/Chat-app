@@ -20,7 +20,9 @@ export default ({
     latestMessage,
     latestMessageSender,
     latestMessageId,
-    isRead
+    isRead,
+    isGroup,
+    setIsGroupChat
 }) => {
     const {auth} = useAuth();
     const axios = useAxiosPrivate();
@@ -28,7 +30,7 @@ export default ({
         setSelectedChat(userId);
         setSelectedChatName(name);
         if(latestMessageId){
-        
+            setIsGroupChat(isGroup);
             axios.put("/messages/readby", {
                 messageId: latestMessageId,
                 userId: auth.id,
